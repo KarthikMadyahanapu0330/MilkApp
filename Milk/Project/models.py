@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from rest_framework_simplejwt.tokens import RefreshToken
-
 class UserManager(BaseUserManager):
     def create_user(self, email, fullname, phone_number, password=None):
         if not email:
@@ -102,7 +101,7 @@ class PaymentMethod(models.TextChoices):
 
     
 class Orders(models.Model):
-    order_id=models.ForeignKey(Addtocart,on_delete=models.CASCADE)
+    cart_id=models.ForeignKey(Addtocart,on_delete=models.CASCADE)
     address=models.TextField()
     phone_number=models.IntegerField(blank=True)
     payment_method = models.CharField(
@@ -111,4 +110,4 @@ class Orders(models.Model):
         default=PaymentMethod.CASH_ON_DELIVERY,
     )
     def __str__(self):
-        return str(f"{self.order_id.customer_id}")
+        return str(f"{self.cart_id.customer_id.fullname}")

@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .seriallizers import RegisterSerializer, LoginSerializer,ProductSeriallizer,AddtocartSeriallizer,CategorySeriallizer,WishlistSerializer,OrderSerializer
+from .seriallizers import RegisterSerializer, LoginSerializer,ProductSeriallizer,AddtocartSeriallizer,CategorySeriallizer,WishlistSerializer,OrderSeriallizer
 from .models import User,Product,Addtocart,Category,Wishlist,Orders
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
@@ -235,10 +235,10 @@ class CategoryProductsView(APIView):
 class OrderView(APIView):
     def get(self,request):
         queryset=Orders.objects.all()
-        serializer=OrderSerializer(queryset,many=True)
+        serializer=OrderSeriallizer(queryset,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
     def post(self,request):
-        serializer=OrderSerializer(data=request.data)
+        serializer=OrderSeriallizer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)

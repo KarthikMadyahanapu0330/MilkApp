@@ -166,7 +166,33 @@ class WishlistSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
     
-class OrderSerializer(serializers.ModelSerializer):
+class OrderSeriallizer(serializers.ModelSerializer):
+    customer_id=serializers.SerializerMethodField()
+    customer_name=serializers.SerializerMethodField()
+    product_name=serializers.SerializerMethodField()
+    quantity = serializers.SerializerMethodField()
+    price=serializers.SerializerMethodField()
     class Meta:
         model=Orders
-        fields='__all__'
+        fields=['id','cart_id','address','phone_number','payment_method','customer_id','customer_name','product_name','quantity','price',"created_at"]
+        read_only_fields=['customer_name','customer_id','product_name','quantity','price']
+    def get_customer_id(self,obj):
+        if obj.cart_id:
+            return obj.cart_id.customer_id_id
+        else:
+            return None
+    def get_customer_name(self,obj):
+        if obj.cart_id:
+            return obj.cart_id.customer_id.fullname
+        else:
+            return None
+    def get_product_name(self,obj):
+        if obj.cart_id:
+            return obj.cart_id.product_id.product_name
+        return None
+    def get_quantity(self,obj):
+        if obj.cart_id:
+            return obj.cart_id.quantity
+    def get_price(self,obj):
+        if obj.cart_id:
+            return obj.cart_id.price
